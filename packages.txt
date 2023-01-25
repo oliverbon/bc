@@ -1,0 +1,5 @@
+pydicom
+matplotlib
+seaborn
+pylibjpeg-openjpeg
+pylibjpeg
