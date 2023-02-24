@@ -2,5 +2,6 @@ streamlit
 pydicom
 matplotlib
 seaborn
+pylibjpeg-openjpeg
 pylibjpeg
-pylibjpeg-libjpeg
+tensorflow
