@@ -1,4 +1,3 @@
-
 import streamlit as st
 import pandas as pd
 import pydicom
@@ -23,8 +22,6 @@ def main():
                 if uploaded_file.type == 'application/dicom':
                     dcm = pydicom.dcmread(uploaded_file)
                     img = dcm.pixel_array
-                    if img.PhotometricInterpretation == "MONOCHROME1":
-                        img = np.amax(img) - img
                     img = img - np.min(img)
                     img = img / np.max(img)
                     img = (img * 255).astype(np.uint8)
@@ -32,11 +29,7 @@ def main():
                 if uploaded_file.type == 'image/png' or uploaded_file.type == 'image/jpeg':
                     img = Image.open(uploaded_file)
                     if img.size != (WIDTH, HEIGHT):
-                        #redimensionar
                         img = img.resize((WIDTH, HEIGHT), Image.LANCZOS).convert('L')
-                    #if img.mode != "L":
-                    #    # to black and white
-                    #    img = img.convert(mode="L")
                 pix = np.asarray(img)
                 fig, ax = plt.subplots(1, 1, figsize=(20, 5))
                 plt.imshow(pix, cmap='gray')
