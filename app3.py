@@ -24,6 +24,7 @@ def main():
         submitted = st.form_submit_button("Submit")
         if submitted:
             if uploaded_file is not None:
+                pix = []
                 if uploaded_file.type == 'image/png' or uploaded_file.type == 'image/jpeg':
                         img = Image.open(uploaded_file)
                         if img.size != (WIDTH, HEIGHT):
