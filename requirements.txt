@@ -3,5 +3,6 @@ pydicom
 matplotlib
 seaborn
 pylibjpeg-openjpeg
+pylibjpeg-libjpeg
 pylibjpeg
 tensorflow

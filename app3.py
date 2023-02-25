@@ -42,14 +42,14 @@ def main():
                         data = (data * 255).astype(np.uint8)
                         img = Image.fromarray(data).resize((WIDTH, HEIGHT), Image.ANTIALIAS)
                         pix = np.asarray(img)
-                npix = np.repeat(pix[:, :, np.newaxis], 3, axis=2)
+                pix = np.repeat(pix[:, :, np.newaxis], 3, axis=2)
                 #print(pix.shape)          
                 fig, ax = plt.subplots(1, 1, figsize=(20, 5))
-                plt.imshow(npix, cmap='gray')
+                plt.imshow(pix, cmap='gray')
                 plt.title(f'img {uploaded_file}')
                 plt.colorbar()
                 st.pyplot(fig)
-                score = predecir(npix)
+                score = predecir(pix)
                 st.write("Predicted class : %s" % (CLASS_NAMES[np.argmax(score)]))
                 st.write("Score : %f" % (100 * np.max(score)))
 
@@ -57,13 +57,13 @@ def main():
 def predecir(imgMat):
     imgMat = imgMat / 255  ## los calculos son numeros reales entre 0 <-> 1 
     #imgMat = imgMat.reshape(-1, HEIGHT, WIDTH, 1)
-    nimgMat = np.expand_dims(imgMat, axis=0)
-    d=tf.convert_to_tensor(nimgMat)
+    imgMat = np.expand_dims(imgMat, axis=0)
+    d=tf.convert_to_tensor(imgMat)
     learn = keras.models.load_model('models/Modelo1OAZ.h5')
     #learn.load_weights.load_weights('models/modeWeights1OAZ.h5')
     predictions = learn.predict(d)
+    print (predictions)
     score = tf.nn.softmax(predictions)
-    #print(score)
     return score
 
 
