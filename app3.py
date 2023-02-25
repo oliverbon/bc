@@ -13,6 +13,7 @@ import tensorflow as tf
 
 HEIGHT = 512 # pixels
 WIDTH = 512 # pixels
+pix = []
 
 CLASS_NAMES = ["cancer", "no cancer"]
 
