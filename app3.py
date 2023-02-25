@@ -28,15 +28,15 @@ def main():
                     img = img - np.min(img)
                     img = img / np.max(img)
                     img = (img * 255).astype(np.uint8)
-                    img = Image.fromarray(img).resize((WIDTH, HEIGHT), Image.ANTIALIAS)
+                    img = Image.fromarray(img).resize((WIDTH, HEIGHT), Image.LANCZOS).convert('L')
                 if uploaded_file.type == 'image/png' or uploaded_file.type == 'image/jpeg':
                     img = Image.open(uploaded_file)
                     if img.size != (WIDTH, HEIGHT):
                         #redimensionar
-                        img = img.resize((WIDTH, HEIGHT), Image.ANTIALIAS)
-                    if img.mode != "L":
-                        # to black and white
-                        img = img.convert(mode="L")
+                        img = img.resize((WIDTH, HEIGHT), Image.LANCZOS).convert('L')
+                    #if img.mode != "L":
+                    #    # to black and white
+                    #    img = img.convert(mode="L")
                 pix = np.asarray(img)
                 fig, ax = plt.subplots(1, 1, figsize=(20, 5))
                 plt.imshow(pix, cmap='gray')
