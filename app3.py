@@ -18,8 +18,7 @@ WIDTH = 512 # pixels
 CLASS_NAMES = ["cancer", "no cancer"]
 
 def main():
-    pix = []
-    npix = []
+    npix = np.asarray([])
     st.write("# Deteccion de Cancer")
     with st.form("my-form",clear_on_submit=True):
         uploaded_file = st.file_uploader("Choose a DCM file", type=['png', 'jpg','dcm'])
