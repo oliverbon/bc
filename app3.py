@@ -13,11 +13,13 @@ import tensorflow as tf
 
 HEIGHT = 512 # pixels
 WIDTH = 512 # pixels
-pix = []
+
 
 CLASS_NAMES = ["cancer", "no cancer"]
 
 def main():
+    pix = []
+    npix = []
     st.write("# Deteccion de Cancer")
     with st.form("my-form",clear_on_submit=True):
         uploaded_file = st.file_uploader("Choose a DCM file", type=['png', 'jpg','dcm'])
@@ -43,14 +45,14 @@ def main():
                         data = (data * 255).astype(np.uint8)
                         img = Image.fromarray(data).resize((WIDTH, HEIGHT), Image.ANTIALIAS)
                         pix = np.asarray(img)
-                pix = np.repeat(pix[:, :, np.newaxis], 3, axis=2)
+                npix = np.repeat(pix[:, :, np.newaxis], 3, axis=2)
                 #print(pix.shape)          
                 fig, ax = plt.subplots(1, 1, figsize=(20, 5))
-                plt.imshow(pix, cmap='gray')
+                plt.imshow(npix, cmap='gray')
                 plt.title(f'img {uploaded_file}')
                 plt.colorbar()
                 st.pyplot(fig)
-                score = predecir(pix)
+                score = predecir(npix)
                 st.write("Predicted class : %s" % (CLASS_NAMES[np.argmax(score)]))
                 st.write("Score : %f" % (100 * np.max(score)))
 
