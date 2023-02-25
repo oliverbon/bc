@@ -18,7 +18,7 @@ WIDTH = 512 # pixels
 CLASS_NAMES = ["cancer", "no cancer"]
 
 def main():
-    global pix
+    global npix, pix
     st.write("# Deteccion de Cancer")
     with st.form("my-form",clear_on_submit=True):
         uploaded_file = st.file_uploader("Choose a DCM file", type=['png', 'jpg','dcm'])
@@ -44,9 +44,9 @@ def main():
                         data = (data * 255).astype(np.uint8)
                         img = Image.fromarray(data).resize((WIDTH, HEIGHT), Image.ANTIALIAS)
                         pix = np.asarray(img)
-                pix = np.repeat(pix[:, :, np.newaxis], 3, axis=2)      
+                npix = np.repeat(pix[:, :, np.newaxis], 3, axis=2)      
                 fig, ax = plt.subplots(1, 1, figsize=(20, 5))
-                plt.imshow(pix, cmap='gray')
+                plt.imshow(npix, cmap='gray')
                 plt.title(f'img {uploaded_file}')
                 plt.colorbar()
                 st.pyplot(fig)
