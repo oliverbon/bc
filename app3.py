@@ -17,9 +17,9 @@ WIDTH = 512 # pixels
 CLASS_NAMES = ["cancer", "no cancer"]
 
 def main():
-    st.write("# Breast Cancer Detection")
+    st.write("# Deteccion de Cancer")
     with st.form("my-form",clear_on_submit=True):
-        uploaded_file = st.file_uploader("Choose a DCM, png or jpg file", type=['png', 'jpg','dcm'])
+        uploaded_file = st.file_uploader("Choose a DCM file", type=['png', 'jpg','dcm'])
         submitted = st.form_submit_button("Submit")
         if submitted:
             if uploaded_file is not None:
@@ -42,14 +42,14 @@ def main():
                         data = (data * 255).astype(np.uint8)
                         img = Image.fromarray(data).resize((WIDTH, HEIGHT), Image.ANTIALIAS)
                         pix = np.asarray(img)
-                pix = np.repeat(pix[:, :, np.newaxis], 3, axis=2)
-                print(pix.shape)          
+                npix = np.repeat(pix[:, :, np.newaxis], 3, axis=2)
+                #print(pix.shape)          
                 fig, ax = plt.subplots(1, 1, figsize=(20, 5))
-                plt.imshow(pix, cmap='gray')
+                plt.imshow(npix, cmap='gray')
                 plt.title(f'img {uploaded_file}')
                 plt.colorbar()
                 st.pyplot(fig)
-                score = predecir(pix)
+                score = predecir(npix)
                 st.write("Predicted class : %s" % (CLASS_NAMES[np.argmax(score)]))
                 st.write("Score : %f" % (100 * np.max(score)))
 
@@ -57,12 +57,13 @@ def main():
 def predecir(imgMat):
     imgMat = imgMat / 255  ## los calculos son numeros reales entre 0 <-> 1 
     #imgMat = imgMat.reshape(-1, HEIGHT, WIDTH, 1)
-    imgMat = np.expand_dims(imgMat, axis=0)
-    d=tf.convert_to_tensor(imgMat)
+    nimgMat = np.expand_dims(imgMat, axis=0)
+    d=tf.convert_to_tensor(nimgMat)
     learn = keras.models.load_model('models/Modelo1OAZ.h5')
     #learn.load_weights.load_weights('models/modeWeights1OAZ.h5')
     predictions = learn.predict(d)
     score = tf.nn.softmax(predictions)
+    #print(score)
     return score
 
 
