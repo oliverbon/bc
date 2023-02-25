@@ -7,7 +7,9 @@ import seaborn as sns
 from PIL import Image
 import numpy as np
 from tensorflow import keras
+import tensorflow as tf
 
+### Image.merge('RGBA', (r, g, b, alpha))
 
 HEIGHT = 512 # pixels
 WIDTH = 512 # pixels
@@ -39,6 +41,7 @@ def main():
                         data = (data * 255).astype(np.uint8)
                         img = Image.fromarray(data).resize((WIDTH, HEIGHT), Image.ANTIALIAS)
                         pix = np.asarray(img)
+                pix = np.repeat(pix[:, :, np.newaxis], 3, axis=2)
                 print(pix.shape)          
                 fig, ax = plt.subplots(1, 1, figsize=(20, 5))
                 plt.imshow(pix, cmap='gray')
@@ -52,10 +55,11 @@ def main():
 
 def predecir(imgMat):
     imgMat = imgMat / 255  ## los calculos son numeros reales entre 0 <-> 1 
-    imgMat = imgMat.reshape(-1, HEIGHT, WIDTH, 1)
+    #imgMat = imgMat.reshape(-1, HEIGHT, WIDTH, 1)
+    d=tf.convert_to_tensor(imgMat)
     learn = keras.models.load_model('models/Modelo1OAZ.h5')
     #learn.load_weights.load_weights('models/modeWeights1OAZ.h5')
-    predictions = learn.predict(imgMat)
+    predictions = learn.predict(d)
     score = tf.nn.softmax(predictions)
     return score
 
