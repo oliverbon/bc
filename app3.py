@@ -42,7 +42,6 @@ def main():
                         data = (data * 255).astype(np.uint8)
                         img = Image.fromarray(data).resize((WIDTH, HEIGHT), Image.ANTIALIAS)
                         pix = np.asarray(img)
-                print(pix.shape)
                 fig, ax = plt.subplots(1, 1, figsize=(20, 5))
                 plt.imshow(pix, cmap='gray')
                 plt.title(f'img {uploaded_file}')
