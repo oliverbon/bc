@@ -19,8 +19,8 @@ def main():
         submitted = st.form_submit_button("Submit")
         if submitted:
             if uploaded_file is not None:
-                print('tipo de archivo')
-                print(uploaded_file.type)
+                st.write('# tipo de archivo')
+                st.write(uploaded_file.type)
                 if uploaded_file.type == 'application/dicom':
                     dcm = pydicom.dcmread(uploaded_file)
                     img = dcm.pixel_array
