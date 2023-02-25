@@ -9,11 +9,8 @@ import numpy as np
 from tensorflow import keras
 import tensorflow as tf
 
-### Image.merge('RGBA', (r, g, b, alpha))
-
 HEIGHT = 512 # pixels
 WIDTH = 512 # pixels
-
 CLASS_NAMES = ["cancer", "no cancer"]
 
 def main():
@@ -23,7 +20,6 @@ def main():
         submitted = st.form_submit_button("Submit")
         if submitted:
             if uploaded_file is not None:
-                global pix
                 if uploaded_file.type == 'application/dicom':
                     dcm = pydicom.dcmread(uploaded_file)
                     img = dcm.pixel_array
@@ -33,7 +29,6 @@ def main():
                     img = img / np.max(img)
                     img = (img * 255).astype(np.uint8)
                     img = Image.fromarray(img).resize((WIDTH, HEIGHT), Image.ANTIALIAS)
-                    pix = np.asarray(img)
                 if uploaded_file.type == 'image/png' or uploaded_file.type == 'image/jpeg':
                     img = Image.open(uploaded_file)
                     if img.size != (WIDTH, HEIGHT):
@@ -42,7 +37,7 @@ def main():
                     if img.mode != "L":
                         # to black and white
                         img = img.convert(mode="L")
-                    pix = np.asarray(img)
+                pix = np.asarray(img)
                 fig, ax = plt.subplots(1, 1, figsize=(20, 5))
                 plt.imshow(pix, cmap='gray')
                 plt.title(f'img {uploaded_file}')
