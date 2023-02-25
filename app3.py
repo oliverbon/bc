@@ -15,11 +15,11 @@ CLASS_NAMES = ["cancer", "no cancer"]
 def main():
     st.write("# Deteccion de Cancer")
     with st.form("my-form",clear_on_submit=True):
-        print(uploaded_file.type)
         uploaded_file = st.file_uploader("Choose a DCM file", type=['png', 'jpg','dcm'])
         submitted = st.form_submit_button("Submit")
         if submitted:
             if uploaded_file is not None:
+                print(uploaded_file.type)
                 if uploaded_file.type == 'application/dicom':
                     dcm = pydicom.dcmread(uploaded_file)
                     img = dcm.pixel_array
