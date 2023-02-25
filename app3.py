@@ -19,37 +19,28 @@ def main():
         submitted = st.form_submit_button("Submit")
         if submitted:
             if uploaded_file is not None:
-                st.write('# tipo de archivo')
-                st.write(uploaded_file.type)
-                if uploaded_file.type == 'application/dicom':
+                if uploaded_file.type == 'application/dicom' or uploaded_file.type == 'application/octet-stream':
                     dcm = pydicom.dcmread(uploaded_file)
                     img = dcm.pixel_array
                     img = img - np.min(img)
                     img = img / np.max(img)
                     img = (img * 255).astype(np.uint8)
                     img = Image.fromarray(img).resize((WIDTH, HEIGHT), Image.LANCZOS).convert('L')
-                    pix = np.asarray(img)
-                    fig, ax = plt.subplots(1, 1, figsize=(20, 5))
-                    plt.imshow(pix, cmap='gray')
-                    plt.title(f'img {uploaded_file}')
-                    plt.colorbar()
-                    st.pyplot(fig)
-                    score = predecir(pix)
-                    st.write("Predicted class : %s" % (CLASS_NAMES[np.argmax(score)]))
-                    st.write("Score : %f" % (100 * np.max(score)))
+                    
                 if uploaded_file.type == 'image/png' or uploaded_file.type == 'image/jpeg':
                     img = Image.open(uploaded_file)
                     if img.size != (WIDTH, HEIGHT):
                         img = img.resize((WIDTH, HEIGHT), Image.LANCZOS).convert('L')
-                    pix = np.asarray(img)
-                    fig, ax = plt.subplots(1, 1, figsize=(20, 5))
-                    plt.imshow(pix, cmap='gray')
-                    plt.title(f'img {uploaded_file}')
-                    plt.colorbar()
-                    st.pyplot(fig)
-                    score = predecir(pix)
-                    st.write("Predicted class : %s" % (CLASS_NAMES[np.argmax(score)]))
-                    st.write("Score : %f" % (100 * np.max(score)))
+                        
+                pix = np.asarray(img)
+                fig, ax = plt.subplots(1, 1, figsize=(20, 5))
+                plt.imshow(pix, cmap='gray')
+                plt.title(f'img {uploaded_file}')
+                plt.colorbar()
+                st.pyplot(fig)
+                score = predecir(pix)
+                st.write("Predicted class : %s" % (CLASS_NAMES[np.argmax(score)]))
+                st.write("Score : %f" % (100 * np.max(score)))
 
 
 def predecir(imgMat):
