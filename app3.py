@@ -14,13 +14,11 @@ import tensorflow as tf
 HEIGHT = 512 # pixels
 WIDTH = 512 # pixels
 
-
 CLASS_NAMES = ["cancer", "no cancer"]
 
 def main():
     st.write("# Deteccion de Cancer")
     with st.form("my-form",clear_on_submit=True):
-        global npix, pix
         uploaded_file = st.file_uploader("Choose a DCM file", type=['png', 'jpg','dcm'])
         submitted = st.form_submit_button("Submit")
         if submitted:
@@ -44,18 +42,19 @@ def main():
                         data = (data * 255).astype(np.uint8)
                         img = Image.fromarray(data).resize((WIDTH, HEIGHT), Image.ANTIALIAS)
                         pix = np.asarray(img)
-                npix = np.repeat(pix[:, :, np.newaxis], 3, axis=2)      
+                print(pix.shape)
                 fig, ax = plt.subplots(1, 1, figsize=(20, 5))
-                plt.imshow(npix, cmap='gray')
+                plt.imshow(pix, cmap='gray')
                 plt.title(f'img {uploaded_file}')
                 plt.colorbar()
                 st.pyplot(fig)
-                score = predecir(npix)
+                score = predecir(pix)
                 st.write("Predicted class : %s" % (CLASS_NAMES[np.argmax(score)]))
                 st.write("Score : %f" % (100 * np.max(score)))
 
 
 def predecir(imgMat):
+    imgMat = np.repeat(imgMat[:, :, np.newaxis], 3, axis=2)
     imgMat = imgMat / 255  ## los calculos son numeros reales entre 0 <-> 1 
     #imgMat = imgMat.reshape(-1, HEIGHT, WIDTH, 1)
     imgMat = np.expand_dims(imgMat, axis=0)
