@@ -18,9 +18,9 @@ WIDTH = 512 # pixels
 CLASS_NAMES = ["cancer", "no cancer"]
 
 def main():
-    nonlocal npix, pix
     st.write("# Deteccion de Cancer")
     with st.form("my-form",clear_on_submit=True):
+        global npix, pix
         uploaded_file = st.file_uploader("Choose a DCM file", type=['png', 'jpg','dcm'])
         submitted = st.form_submit_button("Submit")
         if submitted:
