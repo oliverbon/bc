@@ -17,6 +17,7 @@ WIDTH = 512 # pixels
 CLASS_NAMES = ["cancer", "no cancer"]
 
 def main():
+    st.write("# Breast Cancer Detection")
     with st.form("my-form",clear_on_submit=True):
         uploaded_file = st.file_uploader("Choose a DCM file", type=['png', 'jpg','dcm'])
         submitted = st.form_submit_button("Submit")
@@ -56,6 +57,7 @@ def main():
 def predecir(imgMat):
     imgMat = imgMat / 255  ## los calculos son numeros reales entre 0 <-> 1 
     #imgMat = imgMat.reshape(-1, HEIGHT, WIDTH, 1)
+    imgMat = np.expand_dims(imgMat, axis=0)
     d=tf.convert_to_tensor(imgMat)
     learn = keras.models.load_model('models/Modelo1OAZ.h5')
     #learn.load_weights.load_weights('models/modeWeights1OAZ.h5')
