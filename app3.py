@@ -24,26 +24,25 @@ def main():
         submitted = st.form_submit_button("Submit")
         if submitted:
             if uploaded_file is not None:
-                pix = []
-                if uploaded_file.type == 'image/png' or uploaded_file.type == 'image/jpeg':
-                        img = Image.open(uploaded_file)
-                        if img.size != (WIDTH, HEIGHT):
-                            #redimensionar
-                            img = img.resize((WIDTH, HEIGHT), Image.ANTIALIAS)
-                        if img.mode != "L":
-                            # to black and white
-                            img = img.convert(mode="L")
-                        pix = np.asarray(img)
                 if uploaded_file.type == 'application/dicom':
-                        dcm = pydicom.dcmread(uploaded_file)
-                        data = dcm.pixel_array
-                        if dcm.PhotometricInterpretation == "MONOCHROME1":
-                            data = np.amax(data) - data
-                        data = data - np.min(data)
-                        data = data / np.max(data)
-                        data = (data * 255).astype(np.uint8)
-                        img = Image.fromarray(data).resize((WIDTH, HEIGHT), Image.ANTIALIAS)
-                        pix = np.asarray(img)
+                    dcm = pydicom.dcmread(uploaded_file)
+                    img = dcm.pixel_array
+                    if img.PhotometricInterpretation == "MONOCHROME1":
+                        img = np.amax(img) - img
+                    img = img - np.min(img)
+                    img = img / np.max(img)
+                    img = (img * 255).astype(np.uint8)
+                    img = Image.fromarray(img).resize((WIDTH, HEIGHT), Image.ANTIALIAS)
+                    pix = np.asarray(img)
+                if uploaded_file.type == 'image/png' or uploaded_file.type == 'image/jpeg':
+                    img = Image.open(uploaded_file)
+                    if img.size != (WIDTH, HEIGHT):
+                        #redimensionar
+                        img = img.resize((WIDTH, HEIGHT), Image.ANTIALIAS)
+                    if img.mode != "L":
+                        # to black and white
+                        img = img.convert(mode="L")
+                    pix = np.asarray(img)
                 fig, ax = plt.subplots(1, 1, figsize=(20, 5))
                 plt.imshow(pix, cmap='gray')
                 plt.title(f'img {uploaded_file}')
