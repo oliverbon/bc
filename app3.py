@@ -43,7 +43,7 @@ def main():
                         data = (data * 255).astype(np.uint8)
                         img = Image.fromarray(data).resize((WIDTH, HEIGHT), Image.ANTIALIAS)
                         pix = np.asarray(img)
-                npix = np.repeat(pix[:, :, np.newaxis], 3, axis=2)s      
+                npix = np.repeat(pix[:, :, np.newaxis], 3, axis=2)      
                 fig, ax = plt.subplots(1, 1, figsize=(20, 5))
                 plt.imshow(npix, cmap='gray')
                 plt.title(f'img {uploaded_file}')
